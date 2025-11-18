@@ -1,4 +1,3 @@
-{-# language ViewPatterns #-}
 {-# language TemplateHaskell #-}
 
 import Data.Bifunctor
@@ -49,7 +48,7 @@ solve :: ([Int], [Int]) -> IO ()
 solve lists = do
   let orderedLists = bimap List.sort List.sort lists
   putStrLn $ "Part 1: Total distance is " ++ show (sumDist orderedLists)
-  putStrLn $ "Part 1: Total similarity is " ++ show (similarity orderedLists)
+  putStrLn $ "Part 2: Total similarity is " ++ show (similarity orderedLists)
 
 main :: IO ()
 main =
