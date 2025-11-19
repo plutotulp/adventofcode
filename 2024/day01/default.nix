@@ -1,5 +1,5 @@
-{ mkDerivation, base, containers, file-embed, lib, megaparsec
-, parser-combinators, text
+{ mkDerivation, base, containers, file-embed, lib, megaparsec, mtl
+, text
 }:
 mkDerivation {
   pname = "day01";
@@ -8,7 +8,7 @@ mkDerivation {
   isLibrary = false;
   isExecutable = true;
   executableHaskellDepends = [
-    base containers file-embed megaparsec parser-combinators text
+    base containers file-embed megaparsec mtl text
   ];
   license = lib.licenses.bsd3;
   mainProgram = "day01";

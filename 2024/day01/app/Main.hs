@@ -2,7 +2,6 @@
 
 import Data.Bifunctor
 
-import Control.Monad.Combinators qualified as Comb
 import Data.FileEmbed qualified as FileEmbed
 import Data.List qualified as List
 import Data.Text (Text)
@@ -26,7 +25,7 @@ decimal :: Parser Int
 decimal = lexeme Lexer.decimal
 
 parser :: Parser ([Int], [Int])
-parser = unzip <$> Comb.many ((,) <$> decimal <*> decimal)
+parser = unzip <$> Megaparsec.many ((,) <$> decimal <*> decimal)
 
 sumDist :: ([Int], [Int]) -> Int
 sumDist (list1, list2) = sum $ zipWith (\a b -> abs (a - b)) list1 list2
