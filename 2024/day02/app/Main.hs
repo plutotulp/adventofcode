@@ -1,7 +1,5 @@
 {-# language TemplateHaskell #-}
-{-# language ViewPatterns #-}
 
-import Control.Monad.Combinators qualified as Comb
 import Data.FileEmbed qualified as FileEmbed
 import Data.List qualified as List
 import Data.Text (Text)
@@ -25,7 +23,7 @@ decimal = lexeme Lexer.decimal
 type Report = [Int]
 
 parser :: Parser [Report]
-parser = Comb.many (Comb.some decimal <* Char.newline)
+parser = Megaparsec.many (Megaparsec.some decimal <* Char.newline)
 
 isSafe :: Report -> Bool
 isSafe ls = (isIncreasing || isDecreasing) && hasSmallSteps
