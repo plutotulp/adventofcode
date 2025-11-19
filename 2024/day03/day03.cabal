@@ -1,0 +1,45 @@
+cabal-version:      3.14
+name:               day03
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Erlend Huru
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  Lib
+    build-depends:    base ^>=4.21.0.0
+                    , megaparsec ^>= 9.7.0
+                    , mtl ^>= 2.3.1
+                    , text ^>= 2.1.2
+    hs-source-dirs:   lib
+    default-language: GHC2024
+
+executable day03
+    import:           warnings
+    main-is:          Main.hs
+    build-depends:    base ^>=4.21.0.0
+                    , day03
+                    , file-embed ^>= 0.0.16.0
+                    , text ^>= 2.1.2
+    hs-source-dirs:   app
+    default-language: GHC2024
+
+test-suite test
+    type:             exitcode-stdio-1.0
+    main-is:          test.hs
+    build-depends:    base ^>=4.21.0.0
+                    , day03
+                    , file-embed ^>= 0.0.16.0
+                    , hspec ^>= 2.11.14
+                    , hspec-megaparsec ^>= 2.2.1
+                    , megaparsec ^>= 9.7.0
+                    , tasty ^>= 1.5.3
+                    , tasty-hspec ^>= 1.2.0.4
+                    , text ^>= 2.1.2
+    hs-source-dirs:   tests
+    default-language: GHC2024

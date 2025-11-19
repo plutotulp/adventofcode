@@ -8,8 +8,13 @@
       haskellPkgs = pkgs.haskell.packages.ghc912;
       builder = haskellPkgs.ghcWithPackages (p: [
         p.file-embed
+        p.hspec
+        p.hspec-megaparsec
         p.megaparsec
         p.parser-combinators
+        p.tasty
+        p.tasty-hspec
+        p.text
       ]);
     in
       {
@@ -27,6 +32,7 @@
         packages.${system} = {
           day01 = haskellPkgs.callPackage ./day01 {};
           day02 = haskellPkgs.callPackage ./day02 {};
+          day03 = haskellPkgs.callPackage ./day03 {};
         };
       };
 }
