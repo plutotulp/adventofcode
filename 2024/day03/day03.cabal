@@ -24,7 +24,6 @@ executable day03
     main-is:          Main.hs
     build-depends:    base ^>=4.21.0.0
                     , day03
-                    , file-embed ^>= 0.0.16.0
                     , text ^>= 2.1.2
     hs-source-dirs:   app
     default-language: GHC2024
@@ -34,7 +33,6 @@ test-suite test
     main-is:          test.hs
     build-depends:    base ^>=4.21.0.0
                     , day03
-                    , file-embed ^>= 0.0.16.0
                     , hspec ^>= 2.11.14
                     , hspec-megaparsec ^>= 2.2.1
                     , megaparsec ^>= 9.7.0
