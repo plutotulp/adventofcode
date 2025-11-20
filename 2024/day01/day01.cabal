@@ -14,7 +14,6 @@ executable day01
     main-is:          Main.hs
     build-depends:    base ^>=4.21.0.0
                     , containers ^>= 0.7
-                    , file-embed ^>= 0.0.16.0
                     , megaparsec ^>= 9.7.0
                     , mtl ^>= 2.3.1
                     , text ^>= 2.1.2
