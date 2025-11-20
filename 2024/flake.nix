@@ -14,6 +14,7 @@
         p.parser-combinators
         p.tasty
         p.tasty-hspec
+        p.vector
         p.text
       ]);
     in
@@ -33,6 +34,7 @@
           day01 = haskellPkgs.callPackage ./day01 {};
           day02 = haskellPkgs.callPackage ./day02 {};
           day03 = haskellPkgs.callPackage ./day03 {};
+          day04 = haskellPkgs.callPackage ./day04 {};
         };
       };
 }
