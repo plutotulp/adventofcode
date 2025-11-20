@@ -13,7 +13,6 @@ executable day02
     import:           warnings
     main-is:          Main.hs
     build-depends:    base ^>=4.21.0.0
-                    , file-embed ^>= 0.0.16.0
                     , megaparsec ^>= 9.7.0
                     , text ^>= 2.1.2
     hs-source-dirs:   app

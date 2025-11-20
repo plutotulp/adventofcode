@@ -1,18 +1,14 @@
-{-# language TemplateHaskell #-}
-
-import Data.FileEmbed qualified as FileEmbed
 import Data.List qualified as List
 import Data.Text (Text)
+import Data.Text.IO.Utf8 qualified as IO.Utf8
 import Data.Void (Void)
+import System.Environment qualified as Environment
 import Text.Megaparsec (MonadParsec, Token, Parsec)
 import Text.Megaparsec qualified as Megaparsec
 import Text.Megaparsec.Char qualified as Char
 import Text.Megaparsec.Char.Lexer qualified as Lexer
 
 type Parser = Parsec Void Text
-
-inputFile :: Text
-inputFile = $(FileEmbed.embedStringFile "input")
 
 lexeme :: (MonadParsec e s m, Token s ~ Char)=> m a -> m a
 lexeme = Lexer.lexeme Char.hspace
@@ -49,5 +45,7 @@ solve rs = do
   putStrLn $ "Part 2: " ++ show nDmpSafe ++ " reports are safe with dampener"
 
 main :: IO ()
-main =
-  either (error . show) solve $ Megaparsec.runParser parser "" inputFile
+main = do
+  [inputFile] <- Environment.getArgs
+  input <- IO.Utf8.readFile inputFile
+  either (error . show) solve $ Megaparsec.runParser parser "" input
