@@ -96,9 +96,9 @@ getMiddle xs = xs !! (length xs `div` 2)
 
 solve :: ([Rule], [Update]) -> IO ()
 solve (rs, us) = do
-  let (disordered, ordered) = List.partition (isCorrectlyOrdered rs) us
+  let (ordered, disordered) = List.partition (isCorrectlyOrdered rs) us
       reordered = reorder rs <$> disordered
-      scm = sum $ getMiddle ordered
-      scedm = sum $ getMiddle reordered
+      scm = sum $ getMiddle <$> ordered
+      scedm = sum $ getMiddle <$> reordered
   putStrLn $ "Part 1: Sum of middles of correctly-ordered updates is " ++ show scm
   putStrLn $ "Part 2: Sum of moddles of corrected updates is " ++ show scedm
