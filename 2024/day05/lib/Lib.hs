@@ -2,10 +2,10 @@
 
 module Lib where
 
-import Control.Applicative ( Alternative((<|>)), empty )
+import Control.Applicative ( Alternative((<|>)) )
 import Control.Monad ( (>=>), guard )
-import Control.Monad.Logic ( Logic )
-import Control.Monad.Logic qualified as Logic
+import Data.IntMap.Strict ( IntMap )
+import Data.IntMap.Strict qualified as IntMap
 import Data.IntSet ( IntSet )
 import Data.IntSet qualified as IntSet
 import Data.List qualified as List
@@ -25,12 +25,15 @@ data Rule = Page `Before` Page
 
 type Update = [Int]
 
+-- maps page to pages that are before it
+type Beforemap = IntMap IntSet
+
 parser :: Parser ([Rule], [Update])
 parser = do
-  rules <- Megaparsec.many (parseRule <* Char.newline)
+  rs <- Megaparsec.many (parseRule <* Char.newline)
   _ <- Char.newline
-  updates <- Megaparsec.many (parseUpdate <* Char.newline)
-  pure (rules, updates)
+  us <- Megaparsec.many (parseUpdate <* Char.newline)
+  pure (rs, us)
 
 parseRule :: Parser Rule
 parseRule = do
@@ -45,33 +48,30 @@ parseUpdate = Megaparsec.sepBy Lexer.decimal (Char.char ',')
 parse :: Data.Text.Text -> Either (ParseErrorBundle Data.Text.Text Void) ([Rule], [Update])
 parse = Megaparsec.runParser parser ""
 
-choose :: [a] -> Logic a
-choose = foldr ((<|>) . pure) empty
+mkBeforemap :: [Rule] -> Beforemap
+mkBeforemap = IntMap.fromListWith IntSet.union . fmap toKv
+  where
+    toKv (a `Before` b) = (b, IntSet.singleton a)
 
-before :: [Rule] -> Int -> Logic Int
-before rs p = do
-  a `Before` b <- choose rs
-  guard (b == p)
-  pure a
+-- all pages that are before the given one, directly by rule
+befores :: Int -> Beforemap -> [Int]
+befores p = maybe [] IntSet.toList . IntMap.lookup p
 
-correctlyOrdered :: [Rule] -> Update -> Logic ()
-correctlyOrdered rs = go
+isBefore :: Int -> Int -> Beforemap -> Bool
+isBefore b x bs = maybe False (IntSet.member b) (IntMap.lookup x bs)
+
+isCorrectlyOrdered :: Beforemap -> Update -> Bool
+isCorrectlyOrdered bs = not . null . go
   where
     go (p1 : p2 : ps) = do
-      bp2 <- before rs p2
+      bp2 <- befores p2 bs
       guard (bp2 == p1)
       go (p2 : ps)
     go _ = pure ()
 
-witnessed :: Logic a -> Bool
-witnessed = not . null . Logic.observeAll
-
-isCorrectlyOrdered :: [Rule] -> Update -> Bool
-isCorrectlyOrdered rs = witnessed . correctlyOrdered rs
-
-update :: [Rule] -> IntSet -> Logic Update
-update _  ps  | IntSet.size ps <= 1 = pure (IntSet.toList ps)
-update rs ps0 = go (IntSet.toList ps0) []
+updates :: Beforemap -> IntSet -> [Update]
+updates _  ps  | IntSet.size ps <= 1 = pure (IntSet.toList ps)
+updates bs ps0 = go (IntSet.toList ps0) []
   where
     go [] = pure
     go (p : ps) = ins p >=> go ps
@@ -79,26 +79,36 @@ update rs ps0 = go (IntSet.toList ps0) []
     ins x []         = pure [x]
     ins x yss@(y:ys) = insBefore <|> insLater
       where
-        insBefore = do
-          a `Before` b <- choose rs
-          guard $ a == x
-          guard $ y == b
-          pure $ x : yss
+        insBefore
+          | isBefore x y bs = pure $ x : yss
+          | otherwise       = []
         insLater = (y :) <$> ins x ys
 
--- assumes a correct order exists
-reorder :: [Rule] -> Update -> Update
-reorder rs = Logic.observe . update rs . IntSet.fromList
+-- assumes a correct order exists, errors if not
+reorder :: Beforemap -> Update -> Update
+reorder bs u0 =
+  case updates bs $ IntSet.fromList u0 of
+    u : _ -> u
+    []    -> error "no correct order exists"
 
--- assumes non-zero and odd-numbered list
-getMiddle :: [a] -> a
-getMiddle xs = xs !! (length xs `div` 2)
+-- errors on empty list or even number of elements
+getMiddle :: Show a => [a] -> a
+getMiddle [] =
+  error "no middle in empty list"
+getMiddle xs =
+  let n = length xs
+  in if even n
+     then error "even number of elements in list"
+     else xs !! (n `div` 2)
 
 solve :: ([Rule], [Update]) -> IO ()
 solve (rs, us) = do
-  let (ordered, disordered) = List.partition (isCorrectlyOrdered rs) us
-      reordered = reorder rs <$> disordered
-      scm = sum $ getMiddle <$> ordered
-      scedm = sum $ getMiddle <$> reordered
-  putStrLn $ "Part 1: Sum of middles of correctly-ordered updates is " ++ show scm
-  putStrLn $ "Part 2: Sum of moddles of corrected updates is " ++ show scedm
+  let bs = mkBeforemap rs
+      (ordered, disordered) = List.partition (isCorrectlyOrdered bs) us
+      reordered = reorder bs <$> disordered
+  putStrLn $
+    "Part 1: Sum of middles of correctly-ordered updates is "
+    ++ show (sum $ getMiddle <$> ordered)
+  putStrLn $
+    "Part 2: Sum of moddles of corrected updates is "
+    ++ show (sum $ getMiddle <$> reordered)
