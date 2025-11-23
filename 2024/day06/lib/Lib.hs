@@ -183,6 +183,6 @@ solve mp = do
     nop :: Int
     nop =
       length
-      $ filter ((== DetectedLoop) . fst)
-      $ parMap rseq (`run` st0)
+      $ filter (== DetectedLoop)
+      $ parMap rseq (fst . (`run` st0))
       $ blockedMaps (Set.toList ops) cfg
