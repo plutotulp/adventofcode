@@ -54,6 +54,8 @@ hasTwoOpSolution (t :| es) = not $ null (go 0 es)
 
     go a [] = void (guard (a == t))
 
+-- assumes all equations has at least two parts, so we get to place at
+-- least one operator.
 hasThreeOpSolution :: Equation -> Bool
 hasThreeOpSolution (t :| es) = not $ null (go 0 es)
   where
@@ -66,6 +68,8 @@ hasThreeOpSolution (t :| es) = not $ null (go 0 es)
 
     opcat a b = read (show a ++ show b)
 
+-- assumes all equations has at least two parts, so we get to place at
+-- least one operator.
 parCalibration :: [Equation] -> (Equation -> Bool) -> Int
 parCalibration es p = sum $ Maybe.catMaybes $ parMap rseq f es
   where
