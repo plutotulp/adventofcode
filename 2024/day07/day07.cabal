@@ -1,0 +1,28 @@
+cabal-version:      3.14
+name:               day07
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Erlend Huru
+build-type:         Simple
+
+common shared
+    ghc-options: -Wall -threaded -with-rtsopts=-N
+    default-language: GHC2024
+
+library
+    import:           shared
+    exposed-modules:  Lib
+    build-depends:    base ^>=4.21.0.0
+                    , megaparsec ^>= 9.7.0
+                    , parallel ^>= 3.2.2.0
+                    , text ^>= 2.1.2
+    hs-source-dirs:   lib
+
+executable day07
+    import:           shared
+    main-is:          Main.hs
+    build-depends:    base ^>=4.21.0.0
+                    , day07
+                    , text ^>= 2.1.2
+    hs-source-dirs:   app
