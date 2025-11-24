@@ -1,0 +1,30 @@
+cabal-version:      3.14
+name:               day09
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Erlend Huru
+build-type:         Simple
+
+common shared
+    ghc-options: -Wall -threaded -with-rtsopts=-N
+    default-language: GHC2024
+
+library
+    import:           shared
+    exposed-modules:  Lib
+                    , Compact
+                    , Defragment
+                    , Disk
+                    , Segment
+    build-depends:    base ^>=4.21.0.0
+                    , containers ^>= 0.7
+                    , mtl ^>= 2.3.1
+    hs-source-dirs:   lib
+
+executable day09
+    import:           shared
+    main-is:          Main.hs
+    build-depends:    base ^>=4.21.0.0
+                    , day09
+    hs-source-dirs:   app
