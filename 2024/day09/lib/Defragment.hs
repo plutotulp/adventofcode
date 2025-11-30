@@ -62,10 +62,10 @@ defragment d0 = find d0 mempty ids
                     EQ ->
                       -- Fits exactly. Move segment here and start looking
                       -- for next file to move.
-                      let free =
-                            Segment.mkFree (Segment.size seg)
-                          rrhs' =
-                            Seq.fromList (Compact.combineSegments $ free : rrhs)
+                      let rrhs' =
+                            Seq.fromList $
+                              Compact.combineSegments $
+                                Segment.mkFree segSz : rrhs
                           lhs' =
                             (lhs |> seg) <> ss <> rrhs'
                        in find lhs' mempty is
@@ -80,7 +80,7 @@ defragment d0 = find d0 mempty ids
                           rrhs' =
                             Seq.fromList $
                               Compact.combineSegments $
-                                Segment.mkFree (Segment.size seg) : rrhs
+                                Segment.mkFree segSz : rrhs
                           lhs' =
                             ((lhs |> seg) <> rhs' <> rrhs')
                        in find lhs' mempty is
