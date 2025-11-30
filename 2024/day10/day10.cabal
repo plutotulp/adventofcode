@@ -22,5 +22,4 @@ executable day10
     main-is:          Main.hs
     build-depends:    base ^>=4.21.0.0
                     , day10
-                    , text ^>= 2.1.2
     hs-source-dirs:   app

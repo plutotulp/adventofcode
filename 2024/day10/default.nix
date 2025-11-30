@@ -1,4 +1,4 @@
-{ mkDerivation, base, containers, lib, text }:
+{ mkDerivation, base, containers, lib }:
 mkDerivation {
   pname = "day10";
   version = "0.1.0.0";
@@ -6,7 +6,7 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [ base containers ];
-  executableHaskellDepends = [ base text ];
+  executableHaskellDepends = [ base ];
   license = lib.licenses.bsd3;
   mainProgram = "day10";
 }
