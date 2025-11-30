@@ -70,7 +70,7 @@ defragment d0 = find d0 mempty ids
                             (lhs |> seg) <> ss <> rrhs'
                        in find lhs' mempty is
                     GT ->
-                      -- More room then needed. Move segment here, mark
+                      -- More room than needed. Move segment here, mark
                       -- free space, and start looking for next file to
                       -- move.
                       let rhs' =
