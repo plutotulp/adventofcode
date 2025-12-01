@@ -49,10 +49,9 @@ password1 :: Int -> [Rot] -> Int
 password1 start = length . filter (== 0) . List.scanl apply1 start
 
 apply2 :: Int -> Rot -> (Int, Int)
-apply2 dial rot =
-  case rot of
-    (R, amt) -> turnRight amt
-    (L, amt) -> turnLeft amt
+apply2 dial = \case
+  (R, amt) -> turnRight amt
+  (L, amt) -> turnLeft amt
   where
     turnRight amt =
       (dial + amt) `divMod` 100
