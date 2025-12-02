@@ -15,7 +15,6 @@ library
     exposed-modules:  Lib
     build-depends:    base ^>=4.21.0.0
                     , containers ^>= 0.7
-                    , mtl ^>= 2.3.1
     hs-source-dirs:   lib
 
 executable day11
