@@ -61,7 +61,7 @@ blink mp = IntMap.foldrWithKey step mp mp
       error "tried to remove already absent stone"
     del n0 (Just v) =
       let v' = v - n0
-       in if v' == 0 then Nothing else Just v'-- | Apply a function @n@ times to a given value.
+       in if v' == 0 then Nothing else Just v'
 
 times :: Int -> (a -> a) -> a -> a
 times n f x =
