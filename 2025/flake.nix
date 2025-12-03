@@ -35,6 +35,7 @@
         packages.${system} = {
           day01 = haskellPkgs.callPackage ./day01 {};
           day02 = haskellPkgs.callPackage ./day02 {};
+          day03 = haskellPkgs.callPackage ./day03 {};
         };
       };
 }
