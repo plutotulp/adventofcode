@@ -44,6 +44,7 @@ adjacentPos p = posAdd p <$> adjacent
 isPaperRoll :: Char -> Bool
 isPaperRoll = (== '@')
 
+-- Positions of paper rolls that are accessible by fork lift.
 forkLiftAccessible :: Map Pos Char -> [Pos]
 forkLiftAccessible mp = filter isAccessible paperRolls
   where
@@ -55,13 +56,25 @@ forkLiftAccessible mp = filter isAccessible paperRolls
         . Maybe.mapMaybe (`Map.lookup` mp)
         . adjacentPos
 
+-- Positions of paper rolls that can be removed, in iterations.
+canBeRemoved :: Map Pos Char -> [[Pos]]
+canBeRemoved = go
+  where
+    go mp =
+      let ps  = forkLiftAccessible mp
+          mp' = foldl' (flip Map.delete) mp ps
+      in if null ps then [] else ps : go mp'
+
 solve :: Map Pos Char -> IO ()
 solve mp = do
   putStrLn $
     "Part 1: There are "
       ++ show (length $ forkLiftAccessible mp)
       ++ " paper rolls accessible by forklift"
-  putStrLn "Part 1: "
+  putStrLn
+    $ "Part 2: We can remove "
+    ++ show (length $ concat $ canBeRemoved mp)
+    ++ " paper rolls in total"
 
 main :: IO ()
 main = do

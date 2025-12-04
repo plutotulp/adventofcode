@@ -1,12 +1,12 @@
-{ mkDerivation, base, containers, lib, mtl, parallel, text }:
+{ mkDerivation, base, containers, lib }:
 mkDerivation {
-  pname = "day08";
+  pname = "day04";
   version = "0.1.0.0";
   src = ./.;
   isLibrary = true;
   isExecutable = true;
-  libraryHaskellDepends = [ base containers mtl parallel ];
-  executableHaskellDepends = [ base text ];
+  libraryHaskellDepends = [ base containers ];
+  executableHaskellDepends = [ base ];
   license = lib.licenses.bsd3;
-  mainProgram = "day08";
+  mainProgram = "day04";
 }

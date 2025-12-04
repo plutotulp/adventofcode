@@ -7,7 +7,7 @@ author:             Erlend Huru
 build-type:         Simple
 
 common shared
-    ghc-options: -Wall -threaded -with-rtsopts=-N
+    ghc-options: -Wall
     default-language: GHC2024
 
 library
@@ -15,8 +15,6 @@ library
     exposed-modules:  Lib
     build-depends:    base ^>=4.21.0.0
                     , containers ^>= 0.7
-                    , mtl ^>= 2.3.1
-                    , parallel ^>= 3.2.2.0
     hs-source-dirs:   lib
 
 executable day04
