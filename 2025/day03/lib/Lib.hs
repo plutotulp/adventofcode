@@ -37,7 +37,7 @@ solve bs = do
   putStrLn $
     "Part 1: Total output joltage is " ++ show (sum $ joltage1 <$> bs)
   putStrLn $
-    "Part 1: New total output joltage is " ++ show (sum $ joltage2 12 <$> bs)
+    "Part 2: New total output joltage is " ++ show (sum $ joltage2 12 <$> bs)
 
 main :: IO ()
 main = do
