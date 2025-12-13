@@ -40,6 +40,7 @@
           day05 = haskellPkgs.callPackage ./day05 {};
           day06 = haskellPkgs.callPackage ./day06 {};
           day07 = haskellPkgs.callPackage ./day07 {};
+          day08 = haskellPkgs.callPackage ./day08 {};
         };
       };
 }
